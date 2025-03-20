@@ -17,6 +17,11 @@ app.add_middleware(
 sessions = {}
 
 
+@app.get("/")
+async def get_status():
+    return "running"
+
+
 @app.websocket("/chat")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
