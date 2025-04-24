@@ -1,4 +1,4 @@
-let ws = new WebSocket("wss://ai-menu-0bb58d27ae72.herokuapp.com/chat");
+let ws = new WebSocket("wss://qr-menu-a22f0c203bde.herokuapp.com/chat"); // local ws://localhost:8000/chat
 
 function toISOStringLocal(dt) {
     if (!dt) return new Date().toISOString();
@@ -75,31 +75,28 @@ document.getElementById('chatHistoryForm').addEventListener('submit', async (e) 
 });
 
 document.getElementById('sendChat').addEventListener('click', () => {
-    if (!ws || ws.readyState !== WebSocket.OPEN) {
-        ws = new WebSocket("wss://ai-menu-0bb58d27ae72.herokuapp.com/chat");
-        ws.onmessage = (event) => {
-            try {
-                const messages = JSON.parse(event.data);
-                const chatHistory = document.getElementById('chatHistory');
-                chatHistory.innerHTML = '';
-                messages.forEach(msg => {
-                    const p = document.createElement('p');
-                    p.textContent = `${msg.role}: ${msg.content}`;
-                    chatHistory.appendChild(p);
-                });
-            } catch (error) {
-                console.error('Error parsing WebSocket message:', error);
-                document.getElementById('chatHistory').textContent = event.data;
-            }
-        };
-        ws.onerror = (error) => {
-            console.error('WebSocket error:', error);
-            document.getElementById('chatHistory').textContent = 'WebSocket error';
-        };
-        ws.onclose = () => {
-            console.log('WebSocket closed');
-        };
-    }
+    ws.onmessage = (event) => {
+        try {
+            const messages = JSON.parse(event.data);
+            const chatHistory = document.getElementById('chatHistory');
+            chatHistory.innerHTML = '';
+            messages.forEach(msg => {
+                const p = document.createElement('p');
+                p.textContent = `${msg.role}: ${msg.content}`;
+                chatHistory.appendChild(p);
+            });
+        } catch (error) {
+            console.error('Error parsing WebSocket message:', error);
+            document.getElementById('chatHistory').textContent = event.data;
+        }
+    };
+    ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        document.getElementById('chatHistory').textContent = 'WebSocket error';
+    };
+    ws.onclose = () => {
+        console.log('WebSocket closed');
+    };
     const message = document.getElementById('chatMessage').value;
     const time = document.getElementById('chatTime').value || new Date().toISOString();
     const language = document.getElementById('chatLanguage').value;
