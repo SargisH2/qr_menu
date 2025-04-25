@@ -34,7 +34,7 @@ app.mount("/admin_panel", StaticFiles(directory="admin_panel", html=True), name=
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    # allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
