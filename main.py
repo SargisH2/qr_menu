@@ -42,7 +42,7 @@ app.add_middleware(
 
 @app.get("/")
 async def info():
-    return "Welcome to the AI Chatbot API! version 20.04, test: /admin_panel"
+    return "Welcome to the AI Chatbot API! version 25.04, test: /admin_panel"
 
 @app.get("/admin_panel", include_in_schema=False)
 async def admin_index():
