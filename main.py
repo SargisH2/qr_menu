@@ -6,6 +6,7 @@ from services.openai_service import ChatBot
 import uvicorn
 import uuid
 import logging
+import json
 from prompts import prompt_rec_time, prompt_rec_orders
 from typing import Dict, List
 from contextlib import asynccontextmanager
@@ -34,7 +35,7 @@ app.mount("/admin_panel", StaticFiles(directory="admin_panel", html=True), name=
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    # allow_credentials=True,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -42,7 +43,7 @@ app.add_middleware(
 
 @app.get("/")
 async def info():
-    return "Welcome to the AI Chatbot API! version 25.04, test: /admin_panel"
+    return "Welcome to the AI Chatbot API! version 25.04 - language, test: /admin_panel"
 
 @app.get("/admin_panel", include_in_schema=False)
 async def admin_index():
@@ -102,6 +103,7 @@ async def log_chat_history(chat_history: ChatHistory):
 
 @app.get("/recommend/time", response_model=List[Recommendation])
 async def recommend_by_time(language: str = "en"):
+    language = language.lower()
     user_id = str(uuid.uuid4())
     chatbot = ChatBot(None, prompt_language=language)
     prompt = prompt_rec_time[language].format(current_time=datetime.now().strftime("%H:%M"))
@@ -110,6 +112,7 @@ async def recommend_by_time(language: str = "en"):
 
 @app.post("/recommend/orders", response_model=List[Recommendation])
 async def recommend_by_orders(button_requests: ButtonRequests, language: str = "en"):
+    language = language.lower()
     user_id = str(uuid.uuid4())
     chatbot = ChatBot(None, prompt_language=language)
     order_summary = ", ".join([f"Button ID {req.id} at {req.timestamp}" for req in button_requests.root])
