@@ -93,6 +93,8 @@ class ChatBot:
             except (json.JSONDecodeError, ValueError):
                 gpt_message = GPT_Message(response=assistant_response, options=None)
 
+            if return_only_response and self.connection:
+                await self.connection.send_json(gpt_message)
             if self.connection:
                 await self.connection.send_json(self.history)
             if return_only_response:
