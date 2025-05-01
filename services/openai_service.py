@@ -95,10 +95,9 @@ class ChatBot:
 
             if return_only_response and self.connection:
                 await self.connection.send_json(response_data)
-            if self.connection:
+            elif self.connection:
                 await self.connection.send_json(self.history)
-            if return_only_response:
-                return gpt_message
+            return gpt_message
 
         except Exception as e:
             logger.error(f"Error in chat processing: {str(e)}")
