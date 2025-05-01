@@ -65,7 +65,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     await websocket.send_text("Error: Empty message received")
                     continue
                 logger.debug(f"Received message from {user_id}: {prompt}")
-                await chatbot.ask(prompt)
+                await chatbot.ask(prompt, return_only_response = True)
             except ValueError as ve:
                 logger.error(f"Validation error for {user_id}: {str(ve)}")
                 await websocket.send_text(f"Error: Invalid input - {str(ve)}")
