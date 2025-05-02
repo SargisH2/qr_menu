@@ -43,7 +43,7 @@ app.add_middleware(
 
 @app.get("/")
 async def info():
-    return "Welcome to the AI Chatbot API! version 02.05 - language, test: /admin_panel"
+    return "Welcome to the AI Chatbot API! version 02.05 - 2, fixed recommendations model: test: /admin_panel"
 
 @app.get("/admin_panel", include_in_schema=False)
 async def admin_index():
@@ -101,16 +101,16 @@ async def log_chat_history(chat_history: ChatHistory):
     logger.info(f"Chat history received: {chat_history.root}")
     return {"status": "success", "received": chat_history.root}
 
-@app.get("/recommend/time", response_model=GPT_Message)
+@app.get("/recommend/time", response_model=List[Recommendation])
 async def recommend_by_time(language: str = "en"):
     language = language.lower()
     user_id = str(uuid.uuid4())
     chatbot = ChatBot(None, prompt_language=language)
     prompt = prompt_rec_time[language].format(current_time=datetime.now().strftime("%H:%M"))
     response = await chatbot.ask(prompt, return_only_response=True)
-    return response
+    return response.options or []
 
-@app.post("/recommend/orders", response_model=List[Recommendation])
+@app.post("/recommend/orders", response_model=GPT_Message)
 async def recommend_by_orders(button_requests: ButtonRequests, language: str = "en"):
     language = language.lower()
     user_id = str(uuid.uuid4())
@@ -118,7 +118,7 @@ async def recommend_by_orders(button_requests: ButtonRequests, language: str = "
     order_summary = ", ".join([f"Button ID {req.id} at {req.timestamp}" for req in button_requests.root])
     prompt = prompt_rec_orders[language].format(orders=order_summary)
     response = await chatbot.ask(prompt, return_only_response=True)
-    return response.options or []
+    return response
 
 def run_server():
     try:
