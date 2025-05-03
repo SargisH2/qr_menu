@@ -30,6 +30,7 @@ class OpenAIResponse(BaseModel):
 class Recommendation(BaseModel):
     item_id: int
     reason: str
+    count: int
 
 class GPT_Message(BaseModel):
     response: str
