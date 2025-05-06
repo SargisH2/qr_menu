@@ -26,10 +26,11 @@ class ChatBot:
         self.thread = client.beta.threads.create()
         self.user_message_times: List[str] = []
         self.history: List[Dict[str, str]] = []
-        self.system_message: Dict[str, str] = {
-            "role": "system",
-            "content": PROMPT_DICT[prompt_language],
-        }
+        # self.system_message: Dict[str, str] = {
+        #     "role": "system",
+        #     "content": PROMPT_DICT[prompt_language],
+        # }
+        self.system_message = {"role": "system","content": ""}
 
     async def ask(self, query: str, return_only_response: bool = False) -> Optional[GPT_Message]:
         try:
@@ -40,7 +41,7 @@ class ChatBot:
                 user_input: str = prompt_data.get("message", "")
                 if lang != self.language:
                     self.language = lang
-                    self.system_message = {"role": "system", "content": PROMPT_DICT[lang]}
+                    # self.system_message = {"role": "system", "content": PROMPT_DICT[lang]}
             except json.JSONDecodeError:
                 user_input = query
                 current_time = datetime.now().strftime("%H:%M")
