@@ -32,7 +32,7 @@ prompt_rec_time = {
   "ru": "Рекомендуй 3+ что-то основанный на время {current_time}:"
 }
 prompt_rec_orders = {
-  "am": "տուր 3+ խորհուրդ հիմնվելով պատվերի վրա որ համատեղելի լինի․ 4-6 բառով մեկնաբանիր առաջարկդ․ {orders}:",
-  "en": "Provide 3+ recommendations based on the orders that are compatible. Explain your suggestion in 4-6 words.: {orders}:",
-  "ru": "Рекомендуй 3+ что-то основанный на заказах для совместимости. Объясни свое предложение в 4-6 словах. {orders}:"
+  "am": "տուր 3+ խորհուրդ հիմնվելով պատվերի վրա որ համատեղելի լինի պատվիրված ապրանքների հետ․ պատասխանիր առավելագույնը 6 բառով․ {orders}:",
+  "en": "Give 3+ recommendations based on the order that are compatible with the ordered products. Answer in 6 words maximum. {orders}:",
+  "ru": "Дайте 3+ рекомендаций на основе заказа, которые будут совместимы с заказанными продуктами. ответьте максимум в 6 слов {orders}:"
 }
