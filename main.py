@@ -40,10 +40,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+orders = {}
+
 
 @app.get("/")
 async def info():
-    return "Welcome to the AI Chatbot API! version 06.05 - 2, prompts fixing 2: test: /admin_panel"
+    return "Welcome to the AI Chatbot API! version 06.05 - 3, saving orders data: test: /admin_panel"
 
 @app.get("/admin_panel", include_in_schema=False)
 async def admin_index():
@@ -113,11 +115,20 @@ async def recommend_by_time(language: str = "en"):
 @app.post("/recommend/orders", response_model=GPT_Message)
 async def recommend_by_orders(button_requests: ButtonRequests, language: str = "en"):
     language = language.lower()
-    user_id = str(uuid.uuid4())
+    user_id = str(uuid.uuid4()) # test
+    new_orders = set(req.id for req in button_requests.root)
+    if not orders.get(user_id) or orders.get(user_id) != new_orders:
+        orders[user_id] = {
+            "orders": new_orders,
+            "response": None
+        }
+    elif orders[user_id]["response"]:
+        return orders[user_id]["response"]
     chatbot = ChatBot(None, prompt_language=language)
     order_summary = ", ".join([f"Button ID {req.id} at {req.timestamp}" for req in button_requests.root])
     prompt = prompt_rec_orders[language].format(orders=order_summary)
     response = await chatbot.ask(prompt, return_only_response=True)
+    orders[user_id]['response'] = response
     return response
 
 def run_server():
