@@ -30,7 +30,7 @@ class ChatBot:
         #     "role": "system",
         #     "content": PROMPT_DICT[prompt_language],
         # }
-        self.system_message = {"role": "system","content": ""}
+        # self.system_message = {"role": "system","content": ""}
 
     async def ask(self, query: str, return_only_response: bool = False) -> Optional[GPT_Message]:
         try:
@@ -54,11 +54,11 @@ class ChatBot:
                 content=user_input
             )
 
-            system_message_with_time = f"{self.system_message['content']}\n\nCurrent time is {current_time}."
+            # system_message_with_time = f"{self.system_message['content']}\n\nCurrent time is {current_time}."
             run = client.beta.threads.runs.create(
                 thread_id=self.thread.id,
                 assistant_id=self.assistant_id,
-                instructions=system_message_with_time
+                # instructions=system_message_with_time
             )
 
             while True:
