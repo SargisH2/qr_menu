@@ -45,7 +45,7 @@ orders = {}
 
 @app.get("/")
 async def info():
-    return "Welcome to the AI Chatbot API! version 06.05 - 3, saving orders data: test: /admin_panel"
+    return "Welcome to the AI Chatbot API! version 07.05, count to 0 for simillar items: test: /admin_panel"
 
 @app.get("/admin_panel", include_in_schema=False)
 async def admin_index():

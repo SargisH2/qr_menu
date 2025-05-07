@@ -18,6 +18,10 @@ assistant_ids = {
     "ru": "asst_wYkaLvIOu8yPQc48zott4udb"
 }
 
+with open("services/menu_am.json", "r", encoding="utf-8") as f:
+    menu_data = json.load(f)
+    menu = {item['item_id']: item for item in menu_data}
+
 class ChatBot:
     def __init__(self, connection, prompt_language: str = "am"):
         self.connection = connection
@@ -89,8 +93,14 @@ class ChatBot:
 
 
             try:
-                response_data = json.loads(assistant_response)
+                response_data: dict = json.loads(assistant_response)
                 gpt_message = GPT_Message(**response_data)
+                item_ids = (rec['item_id'] for rec in response_data.get("options", []))
+                types_unique = set(menu[item_id]['type'] for item_id in item_ids)
+                if len(types_unique) <= 2:
+                    for rec in response_data.get("options", []):
+                        rec['count'] = 0
+                
             except (json.JSONDecodeError, ValueError):
                 gpt_message = GPT_Message(response=assistant_response, options=None)
 
