@@ -31,6 +31,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.mount("/admin_panel", StaticFiles(directory="admin_panel", html=True), name="admin")
+app.mount("/build", StaticFiles(directory="build", html=True), name="main")
 
 app.add_middleware(
     CORSMiddleware,
@@ -50,6 +51,10 @@ async def info():
 @app.get("/admin_panel", include_in_schema=False)
 async def admin_index():
     return FileResponse("admin_panel/index.html")
+
+@app.get("/build", include_in_schema=False)
+async def main_page():
+    return FileResponse("build/index.html")
 
 @app.websocket("/chat")
 async def websocket_endpoint(websocket: WebSocket):

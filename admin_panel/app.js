@@ -1,4 +1,4 @@
-let ws = new WebSocket("wss://qr-menu-a22f0c203bde.herokuapp.com/chat"); // local ws://localhost:8000/chat
+let ws = new WebSocket("ws://localhost:8000/chat"); // local ws://localhost:8000/chat
 
 function toISOStringLocal(dt) {
     if (!dt) return new Date().toISOString();
